@@ -26,11 +26,23 @@ async def analyze(
 ):
     # Generate random score for demonstration
     score = random.randint(1, 100)
-    
+
     # Return only the HTML fragment that will be inserted into the page
-    risk_level = "High risk - Approval unlikely" if score < 40 else "Medium risk - Further review needed" if score < 70 else "Low risk - Approval likely"
-    color_class = "bg-red-600" if score < 40 else "bg-yellow-400" if score < 70 else "bg-green-600"
-    
+    risk_level = (
+        "High risk - Approval unlikely"
+        if score < 40
+        else (
+            "Medium risk - Further review needed"
+            if score < 70
+            else "Low risk - Approval likely"
+        )
+    )
+    color_class = (
+        "bg-red-600"
+        if score < 40
+        else "bg-yellow-400" if score < 70 else "bg-green-600"
+    )
+
     return f"""
     <div class="bg-blue-50 p-4 rounded-lg">
       <h3 class="font-bold text-blue-800 text-lg mb-2">Risk Analysis Result</h3>
