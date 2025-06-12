@@ -5,33 +5,92 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
   <title>Credit Risk Analysis</title>
 </head>
 
-<body>
-  <div class="container">
-    <h2>Credit Risk Analysis</h2>
-    <form method="post" action="/analyze">
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" required>
-
-      <label for="income">Income:</label>
-      <input type="number" id="income" name="income" required>
-
-      <label for="loan_amount">Loan Amount:</label>
-      <input type="number" id="loan_amount" name="loan_amount" required>
-
-      <label for="credit_score">Credit Score:</label>
-      <input type="number" id="credit_score" name="credit_score" required>
-
-      <button type="submit">Analyze</button>
-    </form>
-    {% if result %}
-      <div>
-        <h3>{{ result }}</h3>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <!-- Header with UNAL logo -->
+  <header class="bg-red-700 text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://unal.edu.co/_assets/ca8e1ca9a551c3e3ffc233b30e54ba93/images/escudoUnal.svg" class="h-20">
+        <h1 class="text-xl font-bold">Credit Risk Analysis</h1>
       </div>
-    {% endif %}
-  </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Predict Your Credit Risk</h2>
+      
+      <!-- Form with HTMX -->
+      <form hx-post="/analyze" hx-target="#result-container" class="space-y-4">
+        <div>
+          <label for="age" class="block text-sm font-medium text-gray-700">Age:</label>
+          <input type="number" id="age" name="age" required
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label for="income" class="block text-sm font-medium text-gray-700">Income (USD/year):</label>
+          <input type="number" id="income" name="income" required
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label for="loan_amount" class="block text-sm font-medium text-gray-700">Loan Amount (USD):</label>
+          <input type="number" id="loan_amount" name="loan_amount" required
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label for="credit_score" class="block text-sm font-medium text-gray-700">Credit Score (300-850):</label>
+          <input type="number" id="credit_score" name="credit_score" min="300" max="850" required
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+
+        <button type="submit" 
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Analyze Risk
+        </button>
+      </form>
+      
+      <!-- Results container - HTMX will update this area -->
+      <div id="result-container" class="mt-6 p-4 border-t border-gray-200">
+        <!-- Results will be inserted here by HTMX -->
+      </div>
+
+      <!-- Learn more section -->
+      <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+        <h3 class="text-sm font-medium text-gray-600">Learn more about our credit risk model:</h3>
+        <div class="mt-2 flex justify-center space-x-4">
+          <a href="#" class="text-blue-600 hover:text-blue-800">
+            Technical Report
+          </a>
+          <a href="#" class="text-blue-600 hover:text-blue-800">
+            Financial Guides
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-6">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <img src="https://unal.edu.co/fileadmin/templates/images/logos/logo_unal_2021.svg" alt="Universidad Nacional de Colombia" class="h-8 invert">
+        </div>
+        <div class="text-center md:text-right">
+          <p class="text-sm">Credit Risk Analysis Application - <script>document.write(new Date().toLocaleDateString());</script></p>
+          <p class="text-xs mt-2">Developed by: Alejandro Feria - Universidad Nacional de Colombia</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>
