@@ -114,7 +114,7 @@ class ModelService:
 
     def _prepare_features(self, input_data: Dict) -> np.ndarray:
         """
-        Prepara las features para el modelo basándose en datos de entrada simplificados
+        Prepara las features para el modelo basándose en datos de entrada
 
         Args:
             input_data: Diccionario con datos de entrada
@@ -122,37 +122,17 @@ class ModelService:
         Returns:
             Array numpy con features preparadas
         """
-        # Crear un DataFrame con las features requeridas
+        # Crear un DataFrame con las features requeridas directamente desde input_data
         features_dict = {}
 
-        # Para este ejemplo, vamos a simular las features principales
-        # En un caso real, estas se calcularían basándose en los datos de entrada
-
-        # Simular features basándose en datos disponibles
-        loan_amnt = input_data.get("loan_amnt", 0)
-        int_rate = input_data.get("int_rate", 0)
-
-        # Simular features de comportamiento (en producción vendrían de histórico)
-        features_dict["pct_principal_paid"] = 0.8  # Simulado
-        features_dict["total_rec_prncp"] = loan_amnt * 0.8  # Simulado
-        features_dict["last_pymnt_amnt"] = loan_amnt * 0.05  # Simulado
-        features_dict["recoveries"] = 0  # Generalmente 0 para nuevos préstamos
-        features_dict["total_pymnt"] = loan_amnt * 1.1  # Simulado
-        features_dict["total_pymnt_inv"] = loan_amnt * 1.1  # Simulado
-        features_dict["out_prncp"] = loan_amnt * 0.2  # Simulado
-        features_dict["out_prncp_inv"] = loan_amnt * 0.2  # Simulado
-        features_dict["int_rate"] = int_rate
-        features_dict["pct_term_paid"] = 0.6  # Simulado
+        # Usar directamente los valores proporcionados por el usuario
+        for feature in self.TOP_FEATURES:
+            features_dict[feature] = input_data.get(feature, 0.0)
 
         # Crear DataFrame
         df = pd.DataFrame([features_dict])
 
-        # Asegurar que todas las features estén presentes
-        for feature in self.TOP_FEATURES:
-            if feature not in df.columns:
-                df[feature] = 0.0
-
-        # Seleccionar solo las features necesarias
+        # Seleccionar solo las features necesarias en el orden correcto
         X = df[self.TOP_FEATURES].astype("float32")
 
         # Aplicar escalamiento si existe
@@ -322,19 +302,16 @@ if __name__ == "__main__":
 
         # Ejemplo de predicción
         test_data = {
-            "loan_amnt": 10000,
-            "annual_inc": 50000,
-            "int_rate": 12.5,
-            "installment": 250,
-            "dti": 15.2,
-            "fico_range_low": 680,
-            "fico_range_high": 684,
-            "inq_last_6mths": 1,
-            "open_acc": 8,
-            "pub_rec": 0,
-            "revol_bal": 5000,
-            "revol_util": 65.2,
-            "total_acc": 15,
+            "pct_principal_paid": 1.0,
+            "total_rec_prncp": 12000,
+            "last_pymnt_amnt": 100,
+            "recoveries": 0,
+            "total_pymnt": 13000,
+            "total_pymnt_inv": 13000,
+            "out_prncp": 0,
+            "out_prncp_inv": 0,
+            "int_rate": 10.0,
+            "pct_term_paid": 1.0,
         }
 
         result = predict_credit_risk(test_data)

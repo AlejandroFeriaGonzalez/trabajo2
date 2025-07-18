@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,33 @@
   <script src="https://unpkg.com/htmx.org@2.0.4"
     integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
     crossorigin="anonymous"></script>
-  <title>Credit Risk Analysis</title>
+  <title>Análisis de Riesgo Crediticio</title>
+
+  <script>
+    // Auto-calculate total_pymnt_inv to match total_pymnt when total_pymnt changes
+    function updateTotalPymntInv() {
+      const totalPymnt = document.getElementById('total_pymnt').value;
+      const totalPymntInv = document.getElementById('total_pymnt_inv');
+      if (totalPymnt && !totalPymntInv.value) {
+        totalPymntInv.value = totalPymnt;
+      }
+    }
+
+    // Auto-calculate out_prncp_inv to match out_prncp when out_prncp changes
+    function updateOutPrncpInv() {
+      const outPrncp = document.getElementById('out_prncp').value;
+      const outPrncpInv = document.getElementById('out_prncp_inv');
+      if (outPrncp && !outPrncpInv.value) {
+        outPrncpInv.value = outPrncp;
+      }
+    }
+
+    // Add event listeners when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('total_pymnt').addEventListener('input', updateTotalPymntInv);
+      document.getElementById('out_prncp').addEventListener('input', updateOutPrncpInv);
+    });
+  </script>
 </head>
 
 <body class="bg-gradient-to-br from-slate-900 to-slate-700 min-h-screen flex flex-col">
@@ -17,62 +43,110 @@
     <div class="container mx-auto px-4 py-3 flex items-center justify-center">
       <div class="flex flex-row items-center space-x-2">
         <img src="https://unal.edu.co/_assets/ca8e1ca9a551c3e3ffc233b30e54ba93/images/escudoUnal.svg" class="h-20">
-        <h1 class="text-xl font-bold">Credit Risk Analysis</h1>
+        <h1 class="text-xl font-bold">Análisis de Riesgo Crediticio</h1>
       </div>
     </div>
   </header>
 
   <!-- Main content -->
   <main class="flex-grow container mx-auto px-4 py-8">
-    <div class="max-w-md mx-auto rounded-xl shadow-lg overflow-hidden p-6 bg-slate-800">
-      <h2 class="text-2xl font-bold text-center text-gray-100 mb-6">Predict Your Credit Risk</h2>
+    <div class="max-w-4xl mx-auto rounded-xl shadow-lg overflow-hidden p-6 bg-slate-800">
+      <h2 class="text-2xl font-bold text-center text-gray-100 mb-6">Predice tu Riesgo Crediticio</h2>
 
       <!-- Form with HTMX -->
       <form hx-post="/analyze" hx-target="#result-container" class="space-y-4">
-        <div>
-          <label for="age" class="block text-sm font-medium text-gray-300">Age:</label>
-          <input type="number" id="age" name="age" required
-            class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="pct_principal_paid" class="block text-sm font-medium text-gray-300">% Principal Pagado:</label>
+            <input type="number" id="pct_principal_paid" name="pct_principal_paid" required step="0.01" min="0" max="1"
+              placeholder="1.0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+            <p class="text-xs text-gray-400 mt-1">Valor entre 0 y 1 (ej: 0.8 = 80%)</p>
+          </div>
 
-        <div>
-          <label for="income" class="block text-sm font-medium text-gray-300">Income (USD/year):</label>
-          <input type="number" id="income" name="income" required
-            class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
-        </div>
+          <div>
+            <label for="total_rec_prncp" class="block text-sm font-medium text-gray-300">Total Principal Recibido
+              (USD):</label>
+            <input type="number" id="total_rec_prncp" name="total_rec_prncp" required step="100" min="0"
+              placeholder="12000"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
 
-        <div>
-          <label for="loan_amount" class="block text-sm font-medium text-gray-300">Loan Amount (USD):</label>
-          <input type="number" id="loan_amount" name="loan_amount" required
-            class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
-        </div>
+          <div>
+            <label for="last_pymnt_amnt" class="block text-sm font-medium text-gray-300">Último Pago (USD):</label>
+            <input type="number" id="last_pymnt_amnt" name="last_pymnt_amnt" required step="10" min="0"
+              placeholder="100"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
 
-        <div>
-          <label for="credit_score" class="block text-sm font-medium text-gray-300">Credit Score (300-850):</label>
-          <input type="number" id="credit_score" name="credit_score" min="300" max="850" required
-            class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          <div>
+            <label for="recoveries" class="block text-sm font-medium text-gray-300">Recuperaciones (USD):</label>
+            <input type="number" id="recoveries" name="recoveries" required step="10" min="0" placeholder="0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="total_pymnt" class="block text-sm font-medium text-gray-300">Total Pagado (USD):</label>
+            <input type="number" id="total_pymnt" name="total_pymnt" required step="100" min="0" placeholder="13000"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="total_pymnt_inv" class="block text-sm font-medium text-gray-300">Total Pagado por Inversionistas
+              (USD):</label>
+            <input type="number" id="total_pymnt_inv" name="total_pymnt_inv" required step="100" min="0"
+              placeholder="13000"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="out_prncp" class="block text-sm font-medium text-gray-300">Principal Pendiente (USD):</label>
+            <input type="number" id="out_prncp" name="out_prncp" required step="100" min="0" placeholder="0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="out_prncp_inv" class="block text-sm font-medium text-gray-300">Principal Pendiente
+              Inversionistas (USD):</label>
+            <input type="number" id="out_prncp_inv" name="out_prncp_inv" required step="100" min="0" placeholder="0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="int_rate" class="block text-sm font-medium text-gray-300">Tasa de Interés (%):</label>
+            <input type="number" id="int_rate" name="int_rate" required step="0.1" min="0" max="30" placeholder="10.0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+          </div>
+
+          <div>
+            <label for="pct_term_paid" class="block text-sm font-medium text-gray-300">% Término Pagado:</label>
+            <input type="number" id="pct_term_paid" name="pct_term_paid" required step="0.01" min="0" max="1"
+              placeholder="1.0"
+              class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-slate-700 text-gray-100 focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+            <p class="text-xs text-gray-400 mt-1">Valor entre 0 y 1 (ej: 0.2 = 20%)</p>
+          </div>
         </div>
 
         <button type="submit"
           class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 focus:ring-offset-slate-800">
-          Analyze Risk
+          Analizar Riesgo
         </button>
       </form>
 
       <!-- Results container - HTMX will update this area -->
       <div id="result-container" class="mt-6 p-4 border-t border-gray-700 text-gray-300">
-        <!-- Results will be inserted here by HTMX -->
+        <!-- Los resultados aparecerán aquí -->
       </div>
 
       <!-- Learn more section -->
       <div class="mt-6 pt-6 border-t border-gray-700 text-center">
-        <h3 class="text-sm font-medium text-gray-400">Learn more about our credit risk model:</h3>
+        <h3 class="text-sm font-medium text-gray-400">Conoce más sobre nuestro modelo de riesgo crediticio:</h3>
         <div class="mt-2 flex justify-center space-x-4">
           <a href="#" class="text-sky-400 hover:text-sky-300">
-            Technical Report
+            Informe Técnico
           </a>
           <a href="#" class="text-sky-400 hover:text-sky-300">
-            Financial Guides
+            Guías Financieras
           </a>
         </div>
       </div>
@@ -85,10 +159,10 @@
       <div class="flex flex-col md:flex-row items-center justify-center">
         <div class="text-center">
           <p class="text-sm">
-            Credit Risk Analysis Application -
+            Aplicación de Análisis de Riesgo Crediticio -
             <script>document.write(new Date().toLocaleDateString());</script>
           </p>
-          <p class="text-xs mt-2">Developed by: Alejandro Feria - Universidad Nacional de Colombia</p>
+          <p class="text-xs mt-2">Desarrollado por: Alejandro Feria - Universidad Nacional de Colombia</p>
         </div>
       </div>
     </div>

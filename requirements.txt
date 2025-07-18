@@ -1,0 +1,12 @@
+fastapi[standard]
+uvicorn
+pandas
+numpy
+joblib
+logging
+dataclasses
+pathlib
+tensorflow
+keras
+scikit-learn
+matplotlib
