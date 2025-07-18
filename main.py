@@ -78,22 +78,22 @@ async def analyze_risk(
 
         html_response = f"""
         <div class="space-y-4">
-            <h3 class="text-lg font-semibold text-gray-100">Analysis Results</h3>
+            <h3 class="text-lg font-semibold text-gray-100">Resultados de análisis</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-700 p-4 rounded-lg">
-                    <h4 class="font-medium text-gray-300 mb-2">Credit Score</h4>
+                    <h4 class="font-medium text-gray-300 mb-2">Score crediticio</h4>
                     <p class="text-2xl font-bold text-sky-400">{result['credit_score']:.0f}</p>
                 </div>
                 
                 <div class="bg-slate-700 p-4 rounded-lg">
-                    <h4 class="font-medium text-gray-300 mb-2">Risk Level</h4>
+                    <h4 class="font-medium text-gray-300 mb-2">Nivel de riesgo</h4>
                     <p class="text-xl font-semibold {risk_color}">{result['risk_level']}</p>
                 </div>
             </div>
             
             <div class="bg-slate-700 p-4 rounded-lg">
-                <h4 class="font-medium text-gray-300 mb-2">Default Probability</h4>
+                <h4 class="font-medium text-gray-300 mb-2">Probabilidad de incumplimiento</h4>
                 <div class="flex items-center space-x-2">
                     <div class="flex-1 bg-slate-600 rounded-full h-3">
                         <div class="bg-gradient-to-r from-green-500 to-red-500 h-3 rounded-full" 
@@ -104,7 +104,7 @@ async def analyze_risk(
             </div>
             
             <div class="bg-slate-700 p-4 rounded-lg">
-                <h4 class="font-medium text-gray-300 mb-2">Recommendation</h4>
+                <h4 class="font-medium text-gray-300 mb-2">Recomendación</h4>
                 <p class="text-gray-200">{result['recommendation']}</p>
             </div>
         </div>
