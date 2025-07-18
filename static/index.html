@@ -53,6 +53,63 @@
     <div class="max-w-4xl mx-auto rounded-xl shadow-lg overflow-hidden p-6 bg-slate-800">
       <h2 class="text-2xl font-bold text-center text-gray-100 mb-6">Predice tu Riesgo Crediticio</h2>
 
+      <!-- Descripción de variables -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-gray-200 mb-2">Descripción de las variables</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs text-gray-100 bg-slate-700 rounded-lg">
+            <thead>
+              <tr>
+                <th class="px-2 py-1 text-left">Variable</th>
+                <th class="px-2 py-1 text-left">Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="px-2 py-1 font-mono">% principal pagado</td>
+                <td class="px-2 py-1">Porcentaje del principal pagado (valor entre 0 y 1).</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Total principal recibido</td>
+                <td class="px-2 py-1">Principal recibido a la fecha.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Último pago</td>
+                <td class="px-2 py-1">Monto del último pago recibido.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Recuperaciones</td>
+                <td class="px-2 py-1">Recuperaciones brutas después de incumplimiento.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Total pagado</td>
+                <td class="px-2 py-1">Pagos recibidos a la fecha para el monto total financiado.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Total pagado por inversionistas</td>
+                <td class="px-2 py-1">Pagos recibidos a la fecha para la parte financiada por inversionistas.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Principal pendiente</td>
+                <td class="px-2 py-1">Principal pendiente para el monto total financiado.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Principal pendiente inversionistas</td>
+                <td class="px-2 py-1">Principal pendiente para la parte financiada por inversionistas.</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">Tasa de interés</td>
+                <td class="px-2 py-1">Tasa de interés del préstamo (%).</td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1 font-mono">% término pagado</td>
+                <td class="px-2 py-1">Porcentaje del término del préstamo pagado (valor entre 0 y 1).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- Form with HTMX -->
       <form hx-post="/analyze" hx-target="#result-container" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
